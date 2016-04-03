@@ -1,0 +1,87 @@
+/**
+ * GLOBAL SETTINGS
+ */
+
+/**
+ * Table of Contents
+ *
+ * COLORS
+ * BREAKPOINTS
+ * FONTS
+ * LAYOUT
+ */
+
+
+/**
+ * COLORS
+ */
+
+
+//buttons
+
+// Social Colors
+$facebook: #3B5998;
+$twitter: #00ACED;
+$email: #666;
+
+/**
+ * BREAKPOINTS
+ */
+
+//main breakpoints use EM vs REM, so it's based on 16px default font size (i.e. md = 768px)
+$breakpoints: (
+  'xs': (0, 33.9em),
+  'sm': (34em, 47.9em),
+  'md': (48em, 61.9em),
+  'lg': (62em, 74.9em),
+  'xl': (75em, 10000px)
+);
+
+
+/**
+ * FONTS
+ */
+
+$heading-font: 'OpenSans', Helvetica, sans-serif;
+$body-font: 'Merriweather', Georgia, serif;
+
+/**
+ * LAYOUT
+ */
+
+$container-max-widths: (
+  'sm': 34em,
+  'md': 45em,
+  'lg': 60em,
+  'xl': 72.25em,
+);
+
+$grid-widths: (
+  'whole': 100%,
+  'halves': 50%,
+  'thirds': 33.33%,
+  'fourths': 25%,
+  'fifths': 20%,
+  'sixths': 16.666667%,
+  'two-thirds': 66.66%,
+  'three-fourths': 75%,
+  'two-fifths': 40%,
+  'three-fifths': 60%,
+  'four-fifths': 80%
+);
+
+$gutter: 4rem;
+
+$mobile-nav-bp: 'md';
+
+//z index
+$z-1: 1000;
+$z-2: 2000;
+$z-3: 3000;
+$z-4: 4000;
+$z-5: 5000;
+$z-6: 6000;
+$z-7: 7000;
+$z-8: 8000;
+$z-9: 9000;
+$z-woah: 100000000 !important;

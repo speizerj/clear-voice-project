@@ -1,0 +1,82 @@
+/**
+ * MIXINS
+ */
+
+// Translate - used to easily center content vertically and/or horizontally 
+@mixin translate($x, $y) {
+  -webkit-transform: translate($x, $y);
+      -ms-transform: translate($x, $y);
+          transform: translate($x, $y);
+}
+
+//Generic transform mixin for vendor prefixes
+@mixin transform($value) {
+  -webkit-transform: $value;
+      -ms-transform: $value;
+          transform: $value;
+}
+
+//Transitions
+@mixin transition($value) {
+  -webkit-transition: $value;
+          transition: $value;
+}
+
+// Clearfix
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; 
+    display: table; 
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+//Basic Vendor Prefix Mixin
+@mixin vendor($property, $value...) {
+    -webkit-#{$property}: $value;
+       -moz-#{$property}: $value;
+            #{$property}: $value;
+}
+
+/**
+ * Easy breakpoints. "Up" means greater than or equal to the breakpoint size. Down is less than or equal to.
+ * @param  {string} $bp   breakpoint 
+ * @param  {srting} $dir: 'up'          defaults to up - any other value will be down
+ * @example
+ *  @include breakpoint(md) {
+ *    .some-class {
+ *      this rule will only show on medium screen sizes and above
+ *    }
+ *  } 
+ */
+@mixin breakpoint($bp: '', $dir: 'up') {
+  //cycle through the list of breakpoints and get min/max sizes
+  @each $breakpoint in $breakpoints {
+    $name: nth($breakpoint, 1);
+    $size: nth($breakpoint, 2);
+    $min: nth($size, 1);
+    $max: nth($size, 2);
+
+    //if the supplied breakpoint matches the name from the breakpoints list, then add the media query
+    @if $bp == $name {
+      @if $dir == up {
+        @media screen and (min-width: $min) { @content }
+      }
+      @else if $dir == between {
+        @media screen and (min-width: $min) and (max-width: $max) { @content }
+      }
+      @else {
+        @media screen and (max-width: $max) { @content }
+      }
+    }
+
+  }
+
+}
+
+body {
+  background: blue;
+}

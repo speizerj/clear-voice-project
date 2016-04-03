@@ -5,7 +5,7 @@
     .module('app.utils')
     .factory('oauthioService', oauthioService);
 
-  oauthioService.$inject = ['$document, $rootScope, $q'];
+  oauthioService.$inject = ['$document', '$rootScope', '$q'];
 
   /**
    * @name oauthioService
@@ -19,7 +19,7 @@
     var tag = $document[0].createElement('script');
     tag.type = 'text/javascript';
     tag.async = true;
-    tag.src = '/bower_components/oauth-js/dist/oauth.js';
+    tag.src = 'dist/bower_components/oauth-js/dist/oauth.js';
     tag.onreadystatechange = function () {
       if (this.readyState === 'complete') { 
         loadOauthio();

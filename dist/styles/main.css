@@ -1,0 +1,39 @@
+/**
+ * GLOBAL SETTINGS
+ */
+/**
+ * Table of Contents
+ *
+ * COLORS
+ * BREAKPOINTS
+ * FONTS
+ * LAYOUT
+ */
+/**
+ * COLORS
+ */
+/**
+ * BREAKPOINTS
+ */
+/**
+ * FONTS
+ */
+/**
+ * LAYOUT
+ */
+/**
+ * MIXINS
+ */
+/**
+ * Easy breakpoints. "Up" means greater than or equal to the breakpoint size. Down is less than or equal to.
+ * @param  {string} $bp   breakpoint 
+ * @param  {srting} $dir: 'up'          defaults to up - any other value will be down
+ * @example
+ *  @include breakpoint(md) {
+ *    .some-class {
+ *      this rule will only show on medium screen sizes and above
+ *    }
+ *  } 
+ */
+body {
+  background: blue; }
