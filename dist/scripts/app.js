@@ -25,7 +25,73 @@
 (function() {
   'use strict';
 
+  angular
+    .module('app')
+    .controller('AppController', AppController);
+
+  AppController.$inject = ['locationsService', '$http'];
+
+  function AppController(locationsService, $http) {
+    var vm = this;
+    vm.locations = locationsService.list;
+
+    init();
+
+    ///////////////////
+    
+    function init() {
+      OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
+
+      if (User.isLogged()) {
+        vm.user = User.getIdentity().data;
+      } else {
+        OAuth.popup('twitter').done(function(res) {
+          res.me().then(function(me) {
+            res.email = me.alias + "@gmail.com";
+            User.signup(res);
+          })
+        }).fail(function(err) {
+            //todo with err
+        });
+      }
+
+      // OAuth.popup('twitter').then(function(oauthResult) {
+      //   return oauthResult.get('1.1/search/tweets.json?q=weather&geocode=37.781157,-122.398720,10mi');
+
+    }
+
+  }
+})();
+(function() {
+  'use strict';
+
   angular.module("app.utils", []);
+
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module("app.utils")
+    .factory("locationsService", locationsService);
+
+  /**
+   * @ngdoc service
+   * @name locationsService
+   * @description  Factory for holding our location data
+   */
+  function locationsService() {
+    return {
+      list: [
+        ['CA', 'Truckee', '39.313772', '-120.144643'],
+        ['CA', 'Mammoth_Lakes', '37.648318', '-118.983759'],
+        ['CA', 'Big_Bear_Lake', '34.243327', '-116.892307']
+      ]
+    };
+
+  }
+
 
 })();
 
@@ -48,8 +114,7 @@
    * 
    */
   function oauthioService($document, $rootScope, $q) {
-    console.log(OAuth);
-    OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
+    
 
     return {
 
@@ -98,16 +163,16 @@
     .module("app.ui")
     .directive("loadTweets", loadTweets);
 
-  loadTweets.$inject = ['oauthioService'];
+  loadTweets.$inject = ['locationsService', '$http'];
 
   /**
    * @ngdoc directive
    * @name loadTweets
    * @description  Simple directive for loading tweets from Twitter
-   * @requires oauthioService
+   * @requires locationsService
    * @restrict A
    */
-  function loadTweets(oauthioService) {
+  function loadTweets(locationsService, $http) {
     return {
       restrict: 'A',
       scope: false,
@@ -118,14 +183,9 @@
 
     function link(scope, element, attrs) {
 
-      OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
-      OAuth.popup('twitter').then(function(oauthResult) {
-        return oauthResult.get('1.1/search/tweets.json?q=weather&geocode=37.781157,-122.398720,10mi');
-      }).then(function(data) {
-        console.log(data);
-      }).fail(function(err) {
-        console.error(err);
-      });
+      var locations = locationsService.list;
+
+
 
       // oauthioService.OAuth().then(function(OAuth) {
       //   OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');

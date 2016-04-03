@@ -17,8 +17,7 @@
    * 
    */
   function oauthioService($document, $rootScope, $q) {
-    console.log(OAuth);
-    OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
+    
 
     return {
 
