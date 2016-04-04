@@ -15,16 +15,29 @@
   <script src="dist/bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <div load-tweets></div>
+  <div class="container">
+    <select ng-model="vm.locationIndex" ng-change="vm.getData()">
+      <option ng-repeat="location in vm.locations" value="{{$index}}">{{location.city | prettyName}}</option>
+    </select>
+  </div>
+
+  <h1>{{ vm.location.city | prettyName }}</h1>  
+  <img src="http://api.wunderground.com/api/f0980a3218b1a66d/animatedradar/q/{{vm.location.state}}/{{vm.location.city}}.gif?width=280&height=280&newmaps=1&delay=100&interval=60&rainsnow=1&noclutter=1&timelabel=1"/>
+
+  <angucomplete-alt id="location"
+              placeholder="Search Locations"
+              pause="400"
+              selected-object="vm.callback"
+              remote-url="http://autocomplete.wunderground.com/aq?query="
+              remote-url-data-field="RESULTS"
+              title-field="name"
+              input-class="form-control form-control-small"/>
+
 
   
 
@@ -33,6 +46,7 @@
   -->
   <script src="dist/bower_components/angular/angular.js"></script>
   <script src="dist/bower_components/oauth-js/dist/oauth.js"></script>
+  <script src="dist/bower_components/angucomplete-alt/angucomplete-alt.js"></script>
   <!--<script src="dist/bower_components/angular-route/angular-route.js"></script> -->
   <script src="dist/scripts/app.js"></script>
 </body>

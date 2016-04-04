@@ -2,6 +2,7 @@
   'use strict';
 
   angular.module('app', [
+    'angucomplete-alt',
     'app.ui',
     'app.utils'
   ]);
@@ -16,9 +17,14 @@
     .module('app')
     .config(appConfig);
 
-  appConfig.$inject = [];
+  appConfig.$inject = ['$httpProvider'];
 
-  function appConfig() {
+  function appConfig($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.withCredentials = true;
+    delete $httpProvider.defaults.headers.common["X-Requested-With"];
+    $httpProvider.defaults.headers.common["Accept"] = "application/json";
+    $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
   }
 
 })();
@@ -34,30 +40,65 @@
   function AppController(locationsService, $http) {
     var vm = this;
     vm.locations = locationsService.list;
+    vm.locationIndex = '0';
+    vm.location = vm.locations[vm.locationIndex];
+    vm.getData = getData;
+
+    vm.callback = function(data) {
+      console.log(data);
+    }
 
     init();
 
     ///////////////////
     
+    /**
+     * PUBLIC FUNCTIONS
+     */
+    
+    function getData() {
+      vm.location = vm.locations[vm.locationIndex];
+      oauth();
+    }
+
+
+    /**
+     * PRIVATE FUNCTIONS
+     */
+    
     function init() {
       OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
+      vm.getData();
 
-      if (User.isLogged()) {
-        vm.user = User.getIdentity().data;
-      } else {
-        OAuth.popup('twitter').done(function(res) {
-          res.me().then(function(me) {
-            res.email = me.alias + "@gmail.com";
-            User.signup(res);
-          })
-        }).fail(function(err) {
-            //todo with err
-        });
-      }
 
       // OAuth.popup('twitter').then(function(oauthResult) {
       //   return oauthResult.get('1.1/search/tweets.json?q=weather&geocode=37.781157,-122.398720,10mi');
 
+    }
+
+    function oauth() {
+      //if user twitter credentials are not cached, reauth
+      var oauth = OAuth.create('twitter');
+
+      if (!oauth) {
+        OAuth.popup('twitter', {cache: true}).done(function(res) {
+          getTweets(res);
+        }).fail(function(err) {
+          console.log(err);
+        })
+      //otherwise just use the cached oauth object
+      } else {
+        getTweets(oauth);
+      }
+
+    }
+
+    function getTweets(res) {
+      var location = vm.locations[vm.locationIndex];
+      var geocode = location.lat + ',' + location.lon + ',' + location.rad;
+      res.get('1.1/search/tweets.json?q=weather&geocode=' + geocode).then(function(data) {
+        console.log(data);
+      })
     }
 
   }
@@ -84,9 +125,9 @@
   function locationsService() {
     return {
       list: [
-        ['CA', 'Truckee', '39.313772', '-120.144643'],
-        ['CA', 'Mammoth_Lakes', '37.648318', '-118.983759'],
-        ['CA', 'Big_Bear_Lake', '34.243327', '-116.892307']
+        {state: 'CA', city: 'Truckee', lat: '39.313772', lon: '-120.144643', rad: '20mi'},
+        {state: 'CA', city: 'Mammoth_Lakes', lat: '37.648318', lon: '-118.983759', rad: '50mi'},
+        {state: 'CA', city: 'Big_Bear_Lake', lat: '34.243327', lon: '-116.892307', rad: '20mi'}
       ]
     };
 
@@ -147,6 +188,19 @@
     //   }
     // };
     
+  }
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('app.utils')
+    .filter('prettyName', prettyName);
+
+  function prettyName() {
+    return function(val) {
+      return val.replace(/_/g, ' ');
+    }
   }
 })();
 (function() {

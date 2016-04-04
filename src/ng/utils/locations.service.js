@@ -13,9 +13,9 @@
   function locationsService() {
     return {
       list: [
-        ['CA', 'Truckee', '39.313772', '-120.144643'],
-        ['CA', 'Mammoth_Lakes', '37.648318', '-118.983759'],
-        ['CA', 'Big_Bear_Lake', '34.243327', '-116.892307']
+        {state: 'CA', city: 'Truckee', lat: '39.313772', lon: '-120.144643', rad: '20mi'},
+        {state: 'CA', city: 'Mammoth_Lakes', lat: '37.648318', lon: '-118.983759', rad: '50mi'},
+        {state: 'CA', city: 'Big_Bear_Lake', lat: '34.243327', lon: '-116.892307', rad: '20mi'}
       ]
     };
 

@@ -12,5 +12,8 @@
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
     "oauth-js": "oauthio-web#^0.5.2"
+  },
+  "devDependencies": {
+    "angucomplete-alt": "^2.2.0"
   }
 }
