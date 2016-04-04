@@ -6,13 +6,11 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
+  <title>WeatherTalk</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="dist/bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="dist/bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="dist/bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="dist/styles/main.css">
-  <script src="dist/bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
 
@@ -20,18 +18,35 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
+  <div class="container">
 
-  <h1>{{ vm.location.city | prettyName }}</h1>  
-  <img src="http://api.wunderground.com/api/f0980a3218b1a66d/animatedradar/q/{{vm.location.state}}/{{vm.location.city}}.gif?width=280&height=280&newmaps=1&delay=100&interval=60&rainsnow=1&noclutter=1&timelabel=1"/>
-
-  <angucomplete-alt id="location"
+    <div>
+      <angucomplete-alt id="location"
               placeholder="Search Locations"
               pause="400"
-              selected-object="vm.callback"
-              remote-api-handler="vm.searchAPI"
+              selected-object="vm.locationCallback"
+              remote-api-handler="vm.findLocation"
               remote-url-data-field="RESULTS"
               title-field="name"
-              input-class="form-control form-control-small"/>
+              input-class="">
+      </angucomplete-alt>
+    </div>
+
+
+    <div ng-show="vm.location">
+      <h1>Weather in {{ vm.location.city }}, {{ vm.location.state }}</h1>
+      <div ng-if="vm.forecast">
+        <div ng-repeat="day in vm.forecast">
+          <img ng-if="day.icon_url" src="{{day.icon_url}}" />
+          High: {{day.high.fahrenheit}}
+          Low: {{day.low.fahrenheit}}
+        </div>
+      </div>
+      <img src="http://api.wunderground.com/api/f0980a3218b1a66d/animatedradar/q/{{vm.location.state}}/{{vm.location.city}}.gif?width=280&height=280&newmaps=1&delay=100&interval=60&rainsnow=1&noclutter=1&timelabel=1"/>
+    </div>
+  </div>
+
+
 
 
   

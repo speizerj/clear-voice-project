@@ -1,9 +1,9 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var sass = require('gulp-sass');
+var concatCss = require('gulp-concat-css');
 var gulpDocs = require('gulp-ngdocs');
 
-gulp.task('default', ['scripts','sass','watch']);
+gulp.task('default', ['scripts','css','watch']);
 
 gulp.task('scripts', function() {
   return gulp.src(
@@ -26,6 +26,12 @@ gulp.task('sass', function () {
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./dist/styles/'));
 });
+ 
+gulp.task('css', function () {
+  return gulp.src('./src/styles/**/*.css')
+    .pipe(concatCss("main.css"))
+    .pipe(gulp.dest('./dist/styles/'));
+});
 
 gulp.task('docs', [], function () {
   return gulp.src('./src/ng/**/*.js')
@@ -35,5 +41,5 @@ gulp.task('docs', [], function () {
 
 gulp.task('watch', function() {
   gulp.watch('./src/ng/**/*.js', ['scripts']);
-  gulp.watch('./src/styles/**/*.scss', ['sass']);
+  gulp.watch('./src/styles/**/*.css', ['css']);
 });

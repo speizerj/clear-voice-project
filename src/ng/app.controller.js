@@ -22,7 +22,7 @@
      */
     
     function getData() {
-      oauth();
+      getWeather();
     }
 
     function findLocation(input, timeout) {
@@ -34,14 +34,15 @@
     }
 
     function locationCallback(data) {
-      var location = data.originalObject.name.split(',');
+      var location = data.originalObject.name.split(', ');
+      console.log(location);
       vm.location = {
         "city": location[0],
         "state": stateService.code[location[1]],
         "lat": data.originalObject.lat,
         "lon": data.originalObject.lon
       }
-      console.log(vm.location);
+      vm.getData();
     }   
 
 
@@ -51,7 +52,6 @@
     
     function init() {
       OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
-      vm.getData();
 
 
       // OAuth.popup('twitter').then(function(oauthResult) {
@@ -77,10 +77,20 @@
     }
 
     function getTweets(res) {
-      var location = vm.locations[vm.locationIndex];
-      var geocode = location.lat + ',' + location.lon + ',' + location.rad;
-      res.get('1.1/search/tweets.json?q=weather&geocode=' + geocode).then(function(data) {
-        console.log(data);
+      // var location = vm.locations[vm.locationIndex];
+      // var geocode = location.lat + ',' + location.lon + ',' + location.rad;
+      // res.get('1.1/search/tweets.json?q=weather&geocode=' + geocode).then(function(data) {
+      //   console.log(data);
+      // })
+    }
+
+    function getWeather() {
+      var city = vm.location.city.replace(/\s/g, '_');
+      $http.get('http://api.wunderground.com/api/f0980a3218b1a66d/forecast/q/' + vm.location.state + '/' + city + '.json').success(function(data) {
+        vm.forecast = data.forecast.simpleforecast.forecastday;
+        console.log(vm.forecast);
+      }).error(function(err) {
+        console.log(err);
       })
     }
 
