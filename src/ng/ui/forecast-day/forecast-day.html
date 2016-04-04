@@ -3,7 +3,7 @@
     <strong>{{forecast.date.weekday}} {{forecast.date.monthname}} {{forecast.date.day | ordinalSuffix}}, {{forecast.date.year}}</strong>
   </p>
   <p>
-    <img src="{{forecast.icon_url}}" />
+    <img ng-src="{{forecast.icon_url}}" />
   High: {{forecast.high.fahrenheit}}, Low: {{forecast.low.fahrenheit}}
   </p>
   <p>
