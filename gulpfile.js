@@ -2,6 +2,9 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var concatCss = require('gulp-concat-css');
 var gulpDocs = require('gulp-ngdocs');
+var uglify = require('gulp-uglify');
+var rename = require("gulp-rename");
+var cleanCSS = require('gulp-clean-css');
 
 gulp.task('default', ['scripts','css','watch']);
 
@@ -18,12 +21,16 @@ gulp.task('scripts', function() {
     ]
     )
     .pipe(concat('app.js'))
+    .pipe(uglify())
+    .pipe(rename('app.min.js'))
     .pipe(gulp.dest('./dist/scripts/'));
 });
  
 gulp.task('css', function () {
   return gulp.src('./src/styles/**/*.css')
     .pipe(concatCss("main.css"))
+    .pipe(cleanCSS())
+    .pipe(rename('main.min.css'))
     .pipe(gulp.dest('./dist/styles/'));
 });
 
