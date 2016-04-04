@@ -86,7 +86,6 @@
     }
 
     function getTweets(res) {
-      console.log(res);
       var location = vm.location;
       var geocode = location.lat + ',' + location.lon + ',20mi';
       res.get('1.1/search/tweets.json?q=weather&geocode=' + geocode).then(function(data) {
@@ -95,7 +94,6 @@
         } else {
           vm.weatherTweets = data.statuses;
         }
-        console.log(vm.weatherTweets);
         $scope.$apply();
       })
     }
@@ -104,7 +102,6 @@
       var city = vm.location.city.replace(/\s/g, '_');
       $http.get('http://api.wunderground.com/api/f0980a3218b1a66d/forecast/q/' + vm.location.state + '/' + city + '.json').success(function(data) {
         vm.forecast = data.forecast.simpleforecast.forecastday[0];
-        console.log(vm.forecast);
       }).error(function(err) {
         console.log(err);
       })

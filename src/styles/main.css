@@ -12,6 +12,7 @@
 .content {
   min-height: 60vh;
   padding-bottom: 4rem;
+  padding-top: 1rem;
 }
 
 .weather, .tweets {
@@ -20,6 +21,11 @@
 
 .weather__forecast {
   margin: 2rem 0 0;
+}
+
+.weather__radar {
+  border: 2px solid #333;
+  margin-top: 2rem;
 }
 
 .tweets__single {
@@ -58,5 +64,10 @@
   color: #fff;
   height: 20vh;
   padding: 2rem 0;
+}
+
+.footer a {
+  color: #ccc;
+  cursor: pointer;
 }
 

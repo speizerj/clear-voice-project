@@ -2,6 +2,10 @@
  * ANGUCOMPLETE
  */
 
+.location-autocomplete {
+  max-width: 500px;
+}
+
 .angucomplete-holder {
   position: relative;
 }
@@ -10,6 +14,7 @@
   position: absolute;
   left: 0;
   width: 100%;
+  max-width: 500px;
   background: #fff;
   color: #333;
   padding: 1rem .5rem;
