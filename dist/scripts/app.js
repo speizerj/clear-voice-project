@@ -34,13 +34,16 @@
     .module('app')
     .controller('AppController', AppController);
 
-  AppController.$inject = ['stateService', '$http'];
+  AppController.$inject = ['stateService', '$http', '$scope'];
 
-  function AppController(stateService, $http) {
+  function AppController(stateService, $http, $scope) {
     var vm = this;
     vm.getData = getData;
     vm.locationCallback = locationCallback;
     vm.findLocation = findLocation;
+    vm.connectTwitter = connectTwitter;
+    vm.disc = disc;
+    vm.weatherTweets = true;
 
     init();
 
@@ -52,6 +55,9 @@
     
     function getData() {
       getWeather();
+      if (vm.connected) {
+        getTweets(vm.oauth);
+      }
     }
 
     function findLocation(input, timeout) {
@@ -64,7 +70,6 @@
 
     function locationCallback(data) {
       var location = data.originalObject.name.split(', ');
-      console.log(location);
       vm.location = {
         "city": location[0],
         "state": stateService.code[location[1]],
@@ -74,6 +79,30 @@
       vm.getData();
     }   
 
+    function connectTwitter() {
+      //if user twitter credentials are not cached, reauth
+
+      if (!vm.connected) {
+        OAuth.popup('twitter', {cache: true}).done(function(res) {
+          vm.connected = true;
+          $scope.$apply();
+          getTweets(res);
+        }).fail(function(err) {
+          console.log(err);
+        })
+      //otherwise just use the cached oauth object
+      } else {
+        getTweets(vm.oauth);
+      }
+
+    }
+
+    function disc() {
+      vm.oauth = null;
+      vm.connected = false;
+      OAuth.clearCache();
+    }
+
 
     /**
      * PRIVATE FUNCTIONS
@@ -81,42 +110,29 @@
     
     function init() {
       OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
-
-
-      // OAuth.popup('twitter').then(function(oauthResult) {
-      //   return oauthResult.get('1.1/search/tweets.json?q=weather&geocode=37.781157,-122.398720,10mi');
-
-    }
-
-    function oauth() {
-      //if user twitter credentials are not cached, reauth
-      var oauth = OAuth.create('twitter');
-
-      if (!oauth) {
-        OAuth.popup('twitter', {cache: true}).done(function(res) {
-          getTweets(res);
-        }).fail(function(err) {
-          console.log(err);
-        })
-      //otherwise just use the cached oauth object
-      } else {
-        getTweets(oauth);
-      }
-
+      vm.oauth = OAuth.create('twitter');
+      vm.connected = vm.oauth ? true : false;
     }
 
     function getTweets(res) {
-      // var location = vm.locations[vm.locationIndex];
-      // var geocode = location.lat + ',' + location.lon + ',' + location.rad;
-      // res.get('1.1/search/tweets.json?q=weather&geocode=' + geocode).then(function(data) {
-      //   console.log(data);
-      // })
+      console.log(res);
+      var location = vm.location;
+      var geocode = location.lat + ',' + location.lon + ',20mi';
+      res.get('1.1/search/tweets.json?q=weather&geocode=' + geocode).then(function(data) {
+        if (!data.statuses.length) {
+          vm.weatherTweets = false;
+        } else {
+          vm.weatherTweets = data.statuses;
+        }
+        console.log(vm.weatherTweets);
+        $scope.$apply();
+      })
     }
 
     function getWeather() {
       var city = vm.location.city.replace(/\s/g, '_');
       $http.get('http://api.wunderground.com/api/f0980a3218b1a66d/forecast/q/' + vm.location.state + '/' + city + '.json').success(function(data) {
-        vm.forecast = data.forecast.simpleforecast.forecastday;
+        vm.forecast = data.forecast.simpleforecast.forecastday[0];
         console.log(vm.forecast);
       }).error(function(err) {
         console.log(err);
@@ -137,65 +153,13 @@
 
   angular
     .module('app.utils')
-    .factory('oauthioService', oauthioService);
+    .filter('ordinalSuffix', ordinalSuffix);
 
-  oauthioService.$inject = ['$document', '$rootScope', '$q'];
-
-  /**
-   * @name oauthioService
-   * @service
-   * @description  Simple directive for loading tweets from Twitter
-   * @requires $document
-   * @requires $rootScope
-   * @requires $q
-   * 
-   */
-  function oauthioService($document, $rootScope, $q) {
-    
-
-    return {
-
-    }
-    // var q = $q.defer();
-
-    // var tag = $document[0].createElement('script');
-    // tag.type = 'text/javascript';
-    // tag.async = true;
-    // tag.src = 'dist/bower_components/oauth-js/dist/oauth.js';
-    // tag.onreadystatechange = function () {
-    //   if (this.readyState === 'complete') { 
-    //     loadOauthio();
-    //   } 
-    // };
-    // tag.onload = loadOauthio;
-
-    // var s = $document[0].getElementsByTagName('body')[0];
-    // s.appendChild(tag);
-
-    // function loadOauthio() {
-    //   $rootScope.$apply(function() { 
-    //     q.resolve(window.OAuth); 
-    //   });
-    // }
-
-    // return {
-    //   OAuth: function() { 
-    //     return q.promise; 
-    //   }
-    // };
-    
-  }
-})();
-(function() {
-  'use strict';
-
-  angular
-    .module('app.utils')
-    .filter('prettyName', prettyName);
-
-  function prettyName() {
-    return function(val) {
-      return val.replace(/_/g, ' ');
+  function ordinalSuffix() {
+    return function (val) {
+      var suffix = ["th","st","nd","rd"];
+      var v = val % 100;
+      return val + (suffix[(v-20) % 10]||suffix[v]||suffix[0]);
     }
   }
 })();
@@ -292,43 +256,37 @@
   'use strict';
 
   angular
-    .module("app.ui")
-    .directive("loadTweets", loadTweets);
+    .module('app.ui')
+    .directive('forecastDay', forecastDay);
 
-  loadTweets.$inject = ['locationsService', '$http'];
-
-  /**
-   * @ngdoc directive
-   * @name loadTweets
-   * @description  Simple directive for loading tweets from Twitter
-   * @requires locationsService
-   * @restrict A
-   */
-  function loadTweets(locationsService, $http) {
+  function forecastDay() {
     return {
-      restrict: 'A',
-      scope: false,
-      link: link
-    };
-
-    ////////////////////////
-
-    function link(scope, element, attrs) {
-
-      var locations = locationsService.list;
-
-
-
-      // oauthioService.OAuth().then(function(OAuth) {
-      //   OAuth.initialize('IYreajhsPgFrHnuo3E8FfKS5hsI');
-
-
-      // });
-      
-
+      restrict: 'E',
+      scope: {
+        forecast: '=',
+        location: '='
+      },
+      replace: true,
+      templateUrl: './src/ng/ui/forecast-day/forecast-day.html'
     }
-
   }
+})();
+(function() {
+  'use strict';
 
+  angular
+    .module('app.ui')
+    .directive('weatherTweet', weatherTweet)
+
+  function weatherTweet() {
+    return {
+      restrict: 'E',
+      scope: {
+        tweet: '='
+      },
+      replace: true,
+      templateUrl: './src/ng/ui/weather-tweet/weather-tweet.html'
+    }
+  }
 
 })();

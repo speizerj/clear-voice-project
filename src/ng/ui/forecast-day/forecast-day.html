@@ -1,0 +1,18 @@
+<div class="weather__forecast">
+  <p>
+    <strong>{{forecast.date.weekday}} {{forecast.date.monthname}} {{forecast.date.day | ordinalSuffix}}, {{forecast.date.year}}</strong>
+  </p>
+  <p>
+    <img ng-if="forecast.icon_url" src="{{forecast.icon_url}}" />
+  High: {{forecast.high.fahrenheit}}, Low: {{forecast.low.fahrenheit}}
+    </p>
+  <p>
+    Forecast: <em>{{forecast.conditions}}</em>. Average winds should be around <em>{{forecast.avewind.mph}} mph</em> with gusts as high as <em>{{forecast.maxwind.mph}} mph</em>.
+  <p>
+  <p ng-if="forecast.qpf_allday.in">
+    Estimated Rainfall: <em>{{forecast.qpf_allday.in}} inches</em> with a chance of rain of <em>{{forecast.pop}}%</em>.
+  </p>
+  <p ng-if="forecast.snow_allday.in">
+    Estimated Snow: <em>{{forecast.snow_allday.in}} inches</em>.
+  </p>
+</div>

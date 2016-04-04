@@ -1,0 +1,62 @@
+/**
+ * STYLES
+ */
+
+.header {
+  min-height: 20vh;
+  color: #fff;
+  background: #333;
+  padding-bottom: 2rem;
+}
+
+.content {
+  min-height: 60vh;
+  padding-bottom: 4rem;
+}
+
+.weather, .tweets {
+  margin-top: 3rem;
+}
+
+.weather__forecast {
+  margin: 2rem 0 0;
+}
+
+.tweets__single {
+  border: 1px solid #ccc;
+  padding: .5rem .5rem;
+  margin-bottom: 1rem;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  transition: .2s ease all;
+}
+
+.tweets__single:hover,
+.tweets__single:active,
+.tweets__single:focus {
+  text-decoration: none;
+  background: #eee;
+}
+
+
+.tweets__single-image {
+  margin-right: 1rem;
+  float: left;
+  border: 2px solid #ccc;
+}
+
+.tweets__single-meta {
+  font-size: 1.2rem;
+  margin-bottom: .5rem;
+  display: block;
+  color: #ccc;
+}
+
+.footer {
+  background: #333;
+  color: #fff;
+  height: 20vh;
+  padding: 2rem 0;
+}
+

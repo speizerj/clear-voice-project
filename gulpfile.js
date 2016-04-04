@@ -12,19 +12,13 @@ gulp.task('scripts', function() {
       './src/ng/app.config.js',
       './src/ng/app.controller.js',
       './src/ng//utils/utils.module.js',
-      './src/ng/utils/*.js',
+      './src/ng/utils/**/*.js',
       './src/ng/ui/ui.module.js',
-      './src/ng/ui/*.js',
+      './src/ng/ui/**/*.js',
     ]
     )
     .pipe(concat('app.js'))
     .pipe(gulp.dest('./dist/scripts/'));
-});
-
-gulp.task('sass', function () {
-  return gulp.src('./src/styles/main.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./dist/styles/'));
 });
  
 gulp.task('css', function () {
