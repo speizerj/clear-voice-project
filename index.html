@@ -20,11 +20,6 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <div class="container">
-    <select ng-model="vm.locationIndex" ng-change="vm.getData()">
-      <option ng-repeat="location in vm.locations" value="{{$index}}">{{location.city | prettyName}}</option>
-    </select>
-  </div>
 
   <h1>{{ vm.location.city | prettyName }}</h1>  
   <img src="http://api.wunderground.com/api/f0980a3218b1a66d/animatedradar/q/{{vm.location.state}}/{{vm.location.city}}.gif?width=280&height=280&newmaps=1&delay=100&interval=60&rainsnow=1&noclutter=1&timelabel=1"/>
@@ -33,7 +28,7 @@
               placeholder="Search Locations"
               pause="400"
               selected-object="vm.callback"
-              remote-url="http://autocomplete.wunderground.com/aq?query="
+              remote-api-handler="vm.searchAPI"
               remote-url-data-field="RESULTS"
               title-field="name"
               input-class="form-control form-control-small"/>

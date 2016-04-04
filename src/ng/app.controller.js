@@ -5,18 +5,13 @@
     .module('app')
     .controller('AppController', AppController);
 
-  AppController.$inject = ['locationsService', '$http'];
+  AppController.$inject = ['stateService', '$http'];
 
-  function AppController(locationsService, $http) {
+  function AppController(stateService, $http) {
     var vm = this;
-    vm.locations = locationsService.list;
-    vm.locationIndex = '0';
-    vm.location = vm.locations[vm.locationIndex];
     vm.getData = getData;
-
-    vm.callback = function(data) {
-      console.log(data);
-    }
+    vm.locationCallback = locationCallback;
+    vm.findLocation = findLocation;
 
     init();
 
@@ -27,9 +22,27 @@
      */
     
     function getData() {
-      vm.location = vm.locations[vm.locationIndex];
       oauth();
     }
+
+    function findLocation(input, timeout) {
+      return $http.jsonp('http://autocomplete.wunderground.com/aq?c=US&cb=JSON_CALLBACK&query=' + input, {timeout: timeout}).success(function(data) {
+        return data;
+      }).error(function(err) {
+        console.log(err);
+      });
+    }
+
+    function locationCallback(data) {
+      var location = data.originalObject.name.split(',');
+      vm.location = {
+        "city": location[0],
+        "state": stateService.code[location[1]],
+        "lat": data.originalObject.lat,
+        "lon": data.originalObject.lon
+      }
+      console.log(vm.location);
+    }   
 
 
     /**

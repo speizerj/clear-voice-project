@@ -35,18 +35,13 @@
     .module('app')
     .controller('AppController', AppController);
 
-  AppController.$inject = ['locationsService', '$http'];
+  AppController.$inject = ['stateService', '$http'];
 
-  function AppController(locationsService, $http) {
+  function AppController(stateService, $http) {
     var vm = this;
-    vm.locations = locationsService.list;
-    vm.locationIndex = '0';
-    vm.location = vm.locations[vm.locationIndex];
     vm.getData = getData;
-
-    vm.callback = function(data) {
-      console.log(data);
-    }
+    vm.locationCallback = locationCallback;
+    vm.findLocation = findLocation;
 
     init();
 
@@ -57,9 +52,27 @@
      */
     
     function getData() {
-      vm.location = vm.locations[vm.locationIndex];
       oauth();
     }
+
+    function findLocation(input, timeout) {
+      return $http.jsonp('http://autocomplete.wunderground.com/aq?c=US&cb=JSON_CALLBACK&query=' + input, {timeout: timeout}).success(function(data) {
+        return data;
+      }).error(function(err) {
+        console.log(err);
+      });
+    }
+
+    function locationCallback(data) {
+      var location = data.originalObject.name.split(',');
+      vm.location = {
+        "city": location[0],
+        "state": stateService.code[location[1]],
+        "lat": data.originalObject.lat,
+        "lon": data.originalObject.lon
+      }
+      console.log(vm.location);
+    }   
 
 
     /**
@@ -107,32 +120,6 @@
   'use strict';
 
   angular.module("app.utils", []);
-
-})();
-
-(function() {
-  'use strict';
-
-  angular
-    .module("app.utils")
-    .factory("locationsService", locationsService);
-
-  /**
-   * @ngdoc service
-   * @name locationsService
-   * @description  Factory for holding our location data
-   */
-  function locationsService() {
-    return {
-      list: [
-        {state: 'CA', city: 'Truckee', lat: '39.313772', lon: '-120.144643', rad: '20mi'},
-        {state: 'CA', city: 'Mammoth_Lakes', lat: '37.648318', lon: '-118.983759', rad: '50mi'},
-        {state: 'CA', city: 'Big_Bear_Lake', lat: '34.243327', lon: '-116.892307', rad: '20mi'}
-      ]
-    };
-
-  }
-
 
 })();
 
@@ -203,6 +190,88 @@
     }
   }
 })();
+(function() {
+  'use strict';
+
+  angular
+    .module("app.utils")
+    .factory("stateService", stateService);
+
+  /**
+   * @ngdoc service
+   * @name stateService
+   * @description  Factory for holding our location data
+   */
+  function stateService() {
+    return {
+      code: {
+        'Alabama': 'AL',
+        'Alaska': 'AK',
+        'American Samoa': 'AS',
+        'Arizona': 'AZ',
+        'Arkansas':  'AR',
+        'California':  'CA',
+        'Colorado':  'CO',
+        'Connecticut': 'CT',
+        'Delaware':  'DE',
+        'District of Columbia': 'DC',
+        'Florida': 'FL',
+        'Georgia': 'GA',
+        'Guam':  'GU',
+        'Hawaii': 'HI',
+        'Idaho': 'ID',
+        'Illinois': 'IL',
+        'Indiana': 'IN',
+        'Iowa':  'IA',
+        'Kansas':  'KS',
+        'Kentucky':  'KY',
+        'Louisiana': 'LA',
+        'Maine': 'ME',
+        'Maryland':  'MD',
+        'Marshall Islands':  'MH',
+        'Massachusetts': 'MA',
+        'Michigan':  'MI',
+        'Micronesia': 'FM',
+        'Minnesota': 'MN',
+        'Mississippi': 'MS',
+        'Missouri':  'MO',
+        'Montana': 'MT',
+        'Nebraska':  'NE',
+        'Nevada':  'NV',
+        'New Hampshire': 'NH',
+        'New Jersey':  'NJ',
+        'New Mexico':  'NM',
+        'New York':  'NY',
+        'North Carolina': 'NC',
+        'North Dakota':  'ND',
+        'Northern Marianas' :  'MP',
+        'Ohio' : 'OH',
+        'Oklahoma':  'OK',
+        'Oregon':  'OR',
+        'Palau':   'PW',
+        'Pennsylvania':  'PA',
+        'Puerto Rico': 'PR',
+        'Rhode Island':  'RI',
+        'South Carolina':  'SC',
+        'South Dakota':  'SD',
+        'Tennessee': 'TN',
+        'Texas': 'TX',
+        'Utah':  'UT',
+        'Vermont': 'VT',
+        'Virginia':  'VA',
+        'Virgin Islands':  'VI',
+        'Washington':  'WA',
+        'West Virginia': 'WV',
+        'Wisconsin': 'WI',
+        'Wyoming': 'WY'
+      }
+    };
+
+  }
+
+
+})();
+
 (function() {
   'use strict';
 
