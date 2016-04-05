@@ -11,9 +11,7 @@
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
     "oauth-js": "oauthio-web#^0.5.2",
-    "bootstrap": "^3.3.6"
-  },
-  "devDependencies": {
+    "bootstrap": "^3.3.6",
     "angucomplete-alt": "^2.2.0"
   }
 }
