@@ -18,6 +18,7 @@ gulp.task('scripts', function() {
       './src/ng/utils/**/*.js',
       './src/ng/ui/ui.module.js',
       './src/ng/ui/**/*.js',
+      '!./src/ng/**/*.test.js',
     ]
     )
     .pipe(concat('app.js'))
