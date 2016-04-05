@@ -9,7 +9,7 @@
 
   /**
    * @name AppController
-   * @ngdoc Controller
+   * @ngdoc controller
    * @description  The main controller for the app
    * @requires  stateService
    * @requires  $http
