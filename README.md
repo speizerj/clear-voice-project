@@ -8,7 +8,7 @@ The project is loosely based off [Angular Seed](https://github.com/angular/angul
 
 ## Getting Started
 
-To get you started you can simply clone the weather-talk repository and install the dependencies using NPM.
+To get started you can simply clone the weather-talk repository and install the dependencies using NPM.
 
 Thanks to Angular Seed, `npm` is preconfigured to automatically run `bower` so all you need to do is:
 
