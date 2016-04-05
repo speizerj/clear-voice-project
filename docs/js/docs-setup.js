@@ -19,7 +19,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "forecastDay",
       "shortDescription": "Today&#39;s forecast",
-      "keywords": "api appcontroller class directive forecast forecastday forecastday-page object passed today"
+      "keywords": "api appcontroller directive forecast forecastday object passed today"
     },
     {
       "section": "api",
@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "weatherTweet",
       "shortDescription": "An individual tweet about the weather",
-      "keywords": "api appcontroller class directive individual object passed tweet weather weathertweet weathertweet-page"
+      "keywords": "api appcontroller directive individual object passed tweet weather weathertweet"
     }
   ],
   "apis": {

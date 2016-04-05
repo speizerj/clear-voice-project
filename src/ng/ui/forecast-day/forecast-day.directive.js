@@ -8,7 +8,7 @@
   /**
    * @name forecastDay
    * @description  Today's forecast
-   * @property {obj} forecast The forecast object passed in from AppController
+   * @param {obj} forecast The forecast object passed in from AppController
    * @restrict E
    * @ngdoc directive
    */

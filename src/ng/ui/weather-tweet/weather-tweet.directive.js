@@ -8,7 +8,7 @@
   /**
    * @name weatherTweet
    * @description  An individual tweet about the weather
-   * @property {obj} tweet The tweet object passed in from AppController
+   * @param {obj} tweet The tweet object passed in from AppController
    * @restrict E
    * @ngdoc directive
    */
