@@ -48,6 +48,9 @@
     }
 
     function locationCallback(data) {
+      if (!!!data) {
+        return;
+      }
       var location = data.originalObject.name.split(', ');
       vm.location = {
         "city": location[0],
