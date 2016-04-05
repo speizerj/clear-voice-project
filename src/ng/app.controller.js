@@ -7,6 +7,14 @@
 
   AppController.$inject = ['stateService', '$http', '$scope'];
 
+  /**
+   * @name AppController
+   * @ngdoc Controller
+   * @description  The main controller for the app
+   * @requires  stateService
+   * @requires  $http
+   * @requires  $scope
+   */
   function AppController(stateService, $http, $scope) {
     var vm = this;
     vm.getData = getData;
@@ -68,6 +76,7 @@
 
     }
 
+    //used mainly for dev but kept in for posterity
     function disc() {
       vm.oauth = null;
       vm.connected = false;

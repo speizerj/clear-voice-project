@@ -5,12 +5,18 @@
     .module('app.ui')
     .directive('forecastDay', forecastDay);
 
+  /**
+   * @name forecastDay
+   * @description  Today's forecast
+   * @property {obj} forecast The forecast object passed in from AppController
+   * @restrict E
+   * @ngdoc directive
+   */
   function forecastDay() {
     return {
       restrict: 'E',
       scope: {
-        forecast: '=',
-        location: '='
+        forecast: '='
       },
       replace: true,
       templateUrl: './src/ng/ui/forecast-day/forecast-day.html'

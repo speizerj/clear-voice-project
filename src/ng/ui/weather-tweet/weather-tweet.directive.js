@@ -5,6 +5,13 @@
     .module('app.ui')
     .directive('weatherTweet', weatherTweet)
 
+  /**
+   * @name weatherTweet
+   * @description  An individual tweet about the weather
+   * @property {obj} tweet The tweet object passed in from AppController
+   * @restrict E
+   * @ngdoc directive
+   */
   function weatherTweet() {
     return {
       restrict: 'E',

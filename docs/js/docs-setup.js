@@ -5,12 +5,21 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
-      "id": "loadTweets",
-      "shortName": "loadTweets",
+      "id": "stateService",
+      "shortName": "stateService",
+      "type": "service",
+      "moduleName": "stateService",
+      "shortDescription": "Factory for holding our state codes",
+      "keywords": "api california code codes factory holding service stateservice var"
+    },
+    {
+      "section": "api",
+      "id": "weatherTweet",
+      "shortName": "weatherTweet",
       "type": "directive",
-      "moduleName": "loadTweets",
-      "shortDescription": "Simple directive for loading tweets from Twitter",
-      "keywords": "api directive loading loadtweets oauthioservice simple tweets twitter"
+      "moduleName": "weatherTweet",
+      "shortDescription": "An individual tweet about the weather",
+      "keywords": "api appcontroller class directive individual object passed tweet weather weathertweet weathertweet-page"
     }
   ],
   "apis": {

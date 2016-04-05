@@ -8,7 +8,9 @@
   /**
    * @ngdoc service
    * @name stateService
-   * @description  Factory for holding our location data
+   * @description  Factory for holding our state codes
+   * @example 
+   * var code = stateService.code['California']; // 'CA'
    */
   function stateService() {
     return {
